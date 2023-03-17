@@ -4,10 +4,21 @@
 #include <chrono>
 #include <thread>
 #include <string>
-
+#include <regex>
 
 
 using namespace std;
+
+int parseVolume(const string& input){
+    regex regexp("\"volume_percent\" : [0-9]+");
+    smatch m;
+    regex_search(input, m, regexp);
+    regex regexp1("[0-9]+");
+    smatch m1;
+    string myStr = m.str();
+    regex_search(myStr, m1, regexp1);
+    return stoi(m1.str());
+}
 
 //int hotkey(){
 //    enum{ONE_KEYID = 1, TWO_KEYID = 2};
@@ -36,23 +47,25 @@ using namespace std;
 
 int main(int argc, char** argv) {
 
-    string oAuth_Tocken = "BQB7Ne8EoBFdZSa_xjqPIrbZFY_AodlOXKW_D_Jfx6k2Ktgik6tceRSN0Wdt0uT1LO4QmYQ7lCWv3DteX2SEOFnwXFq49jK-Yr2SULvTLJJSHbp2KWWvdiE2F3GvAXHsfVl2xQkCOTO3VINI69qYI38Ww0Gm9DOi5-Fti1eSLUzWm6fexuswVbp94w";
+    string oAuth_Tocken = "BQCo4UjUY6Dk3ESZXjTPvjw-RvKn0pQNCo7aJNGAIZrizbziGvkKCBvxGoxq14JYA7fyb46eykzkQZ327YH48SXpT8jhS3N7aokMsCzXohbfkbFiz8XV0tr1yl5hBU01UA8FjhxNKrSL7jV9oHa1NsQBwL82YXdnHHjN54fAL3axz4B_vIvSkiZFBw";
 
-//    cpr::Response r = cpr::Put(cpr::Url{"https://api.spotify.com/v1/me/player/volume?volume_percent=%2B50"},
-//                               cpr::Header{{"Content-Length", "0"}},
-//                               cpr::Bearer{oAuth_Tocken});
-//
-//    cout << r.status_code << endl;
-
-//    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-//
-    cpr::Response r = cpr::Get(cpr::Url{"https://api.spotify.com/v1/me/player"},
+    cpr::Response r = cpr::Put(cpr::Url{"https://api.spotify.com/v1/me/player/volume?volume_percent=%2B50"},
                                cpr::Header{{"Content-Length", "0"}},
                                cpr::Bearer{oAuth_Tocken});
-    string resulte = r.text;
-    cout << resulte << endl;
-    auto pos = resulte.find("volume_percent");
-    auto volumeString = resulte.substr(pos+18,3);
-    int volume = std::stoi(volumeString);
+
+    cout << r.status_code << endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+//
+    cpr::Response m = cpr::Get(cpr::Url{"https://api.spotify.com/v1/me/player"},
+                               cpr::Header{{"Content-Length", "0"}},
+                               cpr::Bearer{oAuth_Tocken});
+  cout << m.text << endl;
+    cout << parseVolume(r.text) << endl;
+
+
+
+
+
     return 0;
 }
