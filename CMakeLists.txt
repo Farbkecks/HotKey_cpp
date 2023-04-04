@@ -1,11 +1,11 @@
-if(WIN32) # Install dlls in the same directory as the executable on Windows
+if (WIN32) # Install dlls in the same directory as the executable on Windows
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-endif()
+endif ()
 
 cmake_minimum_required(VERSION 3.24)
 
-project (HotKey)
+project(HotKey)
 
 include(FetchContent)
 FetchContent_Declare(cpr GIT_REPOSITORY https://github.com/libcpr/cpr.git
@@ -15,8 +15,7 @@ FetchContent_MakeAvailable(cpr)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(HotKey main.cpp)
-target_link_libraries(HotKey PRIVATE cpr::cpr)
-
-
-
+add_executable(HotKey main.cpp spotify.cpp)
+find_package(PythonLibs REQUIRED)
+include_directories(${PYTHON_INCLUDE_DIRS})
+target_link_libraries(HotKey PRIVATE cpr::cpr ${PYTHON_LIBRARIES})
