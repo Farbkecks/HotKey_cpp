@@ -19,13 +19,22 @@ int hotkey(Spotify spotify) {
             case WM_HOTKEY:
                 if (msg.wParam == UP) {
                     cout << "Volume UP" << endl;
-                    spotify.commandSetVolume(spotify.commandGetVolume() + 10);
+                    if (!spotify.commandChangeVolume(10)) {
+                        spotify.generateVerifiedToken();
+                        spotify.commandChangeVolume(10);
+                    }
                 } else if (msg.wParam == DOWN) {
                     cout << "Volume Down" << endl;
-                    spotify.commandSetVolume(spotify.commandGetVolume() - 10);
+                    if (!spotify.commandChangeVolume(-10)) {
+                        spotify.generateVerifiedToken();
+                        spotify.commandChangeVolume(-10);
+                    }
                 } else if (msg.wParam == PAUSE) {
                     cout << "Pause" << endl;
-                    spotify.commandPause();
+                    if (!spotify.commandPause()) {
+                        spotify.generateVerifiedToken();
+                        spotify.commandPause();
+                    }
                 }
         }
     }

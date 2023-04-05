@@ -91,6 +91,7 @@ int Spotify::parseVolume(const std::string &input) {
     smatch m1;
     string myStr = m.str();
     regex_search(myStr, m1, regexp1);
+    if (m1.str() == "") return -1;
     return stoi(m1.str());
 }
 
@@ -101,21 +102,25 @@ std::string Spotify::commandStats() const {
 
 }
 
-void Spotify::commandPause() {
+bool Spotify::commandPause() {
     if (playing) {
-        auto r = pausePlayback();
+        auto response = pausePlayback();
         playing = false;
-        if (r.status_code != 204) {
-            startPlayback();
+        if (response.status_code != 204) {
+            response = startPlayback();
+            if (response.status_code != 204) return false;
             playing = true;
+            return true;
         }
 
     } else {
-        auto r = startPlayback();
+        auto response = startPlayback();
         playing = true;
-        if (r.status_code != 204) {
-            pausePlayback();
+        if (response.status_code != 204) {
+            response = pausePlayback();
+            if (response.status_code != 204) return false;
             playing = false;
+            return true;
         }
     }
 }
@@ -132,12 +137,25 @@ cpr::Response Spotify::startPlayback() const {
                     cpr::Bearer{oAuthToken});
 }
 
-void Spotify::commandSetVolume(int volume) const {
-    cpr::Put(cpr::Url{"https://api.spotify.com/v1/me/player/volume?volume_percent=%2B" + std::to_string(volume)},
-             cpr::Header{{"Content-Length", "0"}},
-             cpr::Bearer{oAuthToken});
+bool Spotify::commandSetVolume(int volume) const {
+    auto response = cpr::Put(
+            cpr::Url{"https://api.spotify.com/v1/me/player/volume?volume_percent=%2B" + std::to_string(volume)},
+            cpr::Header{{"Content-Length", "0"}},
+            cpr::Bearer{oAuthToken});
+    if (response.status_code != 204) return false;
+    return true;
 }
 
 int Spotify::commandGetVolume() const {
-    return parseVolume(commandStats());
+    int resulte = parseVolume(commandStats());
+    return resulte;
+}
+
+bool Spotify::commandChangeVolume(int change) const {
+    auto current = commandGetVolume();
+    if (current == -1) {
+        std::cout << "cant get current volume" << std::endl;
+        return false;
+    }
+    return commandSetVolume(current + change);
 }

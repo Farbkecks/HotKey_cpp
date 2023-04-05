@@ -12,17 +12,20 @@ public:
     //functions
     Spotify();
 
-    void generateVerifiedToken();
-
     std::string commandStats() const;
 
-    void commandPause();
+    bool commandPause();
 
-    void commandSetVolume(int volume) const;
+    bool commandSetVolume(int volume) const;
 
     int commandGetVolume() const;
 
-//private:
+    bool commandChangeVolume(int change) const;
+
+    void generateVerifiedToken();
+
+private:
+
     //functions
     bool testToken() const;
 
