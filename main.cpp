@@ -1,6 +1,4 @@
-
-
-
+#include <windows.h>
 #include "Spotify.h"
 
 using namespace std;

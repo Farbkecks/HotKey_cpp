@@ -3,18 +3,8 @@
 #include <string>
 #include <cpr/cpr.h>
 #include <regex>
-#include <Python.h>
-#include <windows.h>
 #include <iostream>
-#include <chrono>
-#include <thread>
-#include <string>
-#include <cstdio>
 #include <filesystem>
-#include <fstream>
-#include "iostream"
-#include <chrono>
-#include <thread>
 
 
 class Spotify {
