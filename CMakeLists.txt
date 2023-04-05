@@ -15,7 +15,7 @@ FetchContent_MakeAvailable(cpr)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(HotKey main.cpp spotify.cpp)
+add_executable(HotKey main.cpp Spotify.cpp)
 find_package(PythonLibs REQUIRED)
 include_directories(${PYTHON_INCLUDE_DIRS})
 target_link_libraries(HotKey PRIVATE cpr::cpr ${PYTHON_LIBRARIES})
