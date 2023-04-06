@@ -114,8 +114,8 @@ bool Spotify::commandPause() {
             response = startPlayback();
             if (response.status_code != 204) return false;
             playing = true;
-            return true;
         }
+        return true;
 
     } else {
         auto response = startPlayback();
@@ -124,8 +124,8 @@ bool Spotify::commandPause() {
             response = pausePlayback();
             if (response.status_code != 204) return false;
             playing = false;
-            return true;
         }
+        return true;
     }
 }
 
