@@ -75,6 +75,10 @@ void Spotify::generateVerifiedToken() {
         generateToken();
     }
 
+    try {
+        oAuthToken = getToken();
+    } catch (...) {}
+
     while (!testToken()) {
         generateToken(true);
         oAuthToken = getToken();
