@@ -52,6 +52,7 @@ std::string Spotify::parseToken(const std::string &input) {
 }
 
 void Spotify::generateToken(bool deleteChache) {
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     std::cout << "generate new Token" << std::endl;
     //NICHT SO MACHEN
     //es ist super dumm das so zu machen
@@ -64,7 +65,6 @@ void Spotify::generateToken(bool deleteChache) {
     }
 
     system("oauth.py");
-    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 }
 
 void Spotify::generateVerifiedToken() {
